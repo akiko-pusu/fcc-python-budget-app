@@ -40,8 +40,9 @@ class Category:
 
     def __str__(self):
       deposit = self.ledger[0]
+      withdraw = self.ledger[1]
       transfar = self.ledger[2]
-      rest = deposit["amount"] + transfar["amount"]
+      rest = deposit["amount"] + transfar["amount"] + withdraw["amount"]
 
       result = (
         "*************"
@@ -50,14 +51,31 @@ class Category:
         + "deposit                 "
         + '{:.2f}'.format(deposit["amount"])
         + "\n"
-        + deposit["description"]
+        + withdraw["description"][0:23]
         + ' '
-        + str(deposit["amount"])
+        + '{:.2f}'.format(withdraw["amount"])
+        + "\n"
+        + transfar["description"][0:23]
+        + ' '
+        + '{:.2f}'.format(transfar["amount"])
         + "\n"
         + "Total: "
         + str(rest)
       )
       return result
 
+    def spent_percentage(self):
+      withdraw = self.ledger[1]["amout"]
+      deposit = self.ledger[0]["amout"]
+
+      result = (withdraw / deposit) * 100
+      return round(result, -1)
+
+    def spent_number(self, percentage):
+      return percentage / 10
+
 def create_spend_chart(categories):
     print('create_spend_chart called!')
+    str = "Percentage spent by category\n"
+    str += " 100                    \n"
+    return str
